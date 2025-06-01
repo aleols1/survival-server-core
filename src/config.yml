@@ -10,3 +10,4 @@ discord:
     ban: "https://discord.com/api/webhooks/..."
     tempban: "https://discord.com/api/webhooks/..."
     unban: "https://discord.com/api/webhooks/..."
+    noperms: "https://discord.com/api/webhooks/..."

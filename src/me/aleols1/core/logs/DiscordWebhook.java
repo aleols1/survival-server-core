@@ -12,11 +12,13 @@ public class DiscordWebhook {
     private static String banWebhook;
     private static String tempbanWebhook;
     private static String unbanWebhook;
+    private static String noPermsWebhook;
 
     public static void init(Main plugin) {
         banWebhook = plugin.getConfig().getString("discord.webhooks.ban");
         tempbanWebhook = plugin.getConfig().getString("discord.webhooks.tempban");
         unbanWebhook = plugin.getConfig().getString("discord.webhooks.unban");
+        noPermsWebhook = plugin.getConfig().getString("discord.webhooks.noperms");
     }
 
     public static void sendBanEmbed(String actor, String target, String reason) {
@@ -68,6 +70,22 @@ public class DiscordWebhook {
         sendWebhook(unbanWebhook, json);
     }
 
+    public static void sendNoPermsEmbed(String player, String command) {
+        String json = "{"
+                + "\"embeds\": [{"
+                + "\"title\": \"🚫 Forsøk på kommando uten tillatelse\","
+                + "\"color\": 16711680,"
+                + "\"fields\": ["
+                + "{\"name\": \"Spiller\", \"value\": \"" + player + "\", \"inline\": true},"
+                + "{\"name\": \"Kommando\", \"value\": \"/" + command + "\", \"inline\": true},"
+                + "{\"name\": \"Tidspunkt\", \"value\": \"" + java.time.LocalDateTime.now() + "\"}"
+                + "],"
+                + "\"footer\": {\"text\": \"Overvåket av SurvivalServerCore\"}"
+                + "}]}";
+
+        sendWebhook(noPermsWebhook, json);
+    }
+
     private static void sendWebhook(String url, String payload) {
         if (url == null || url.isEmpty()) return;
 
@@ -82,7 +100,7 @@ public class DiscordWebhook {
                     os.write(payload.getBytes());
                 }
 
-                conn.getInputStream().close(); // Trigger the request
+                conn.getInputStream().close();
             } catch (Exception e) {
                 Bukkit.getLogger().warning("Webhook-feil: " + e.getMessage());
             }

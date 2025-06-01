@@ -24,6 +24,7 @@ public class Ban implements CommandExecutor {
         String perm = "core.command." + cmd.getName().toLowerCase();
         if (!sender.hasPermission(perm)) {
             sender.sendMessage(Language.server("Noperms"));
+            DiscordWebhook.sendNoPermsEmbed(sender.getName(), cmd.getName());
             return true;
         }
 
