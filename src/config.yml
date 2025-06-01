@@ -4,3 +4,9 @@ mysql:
   database: "minecraft"
   username: "bruker"
   password: "passord"
+
+discord:
+  webhooks:
+    ban: "https://discord.com/api/webhooks/..."
+    tempban: "https://discord.com/api/webhooks/..."
+    unban: "https://discord.com/api/webhooks/..."

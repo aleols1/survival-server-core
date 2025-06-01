@@ -2,7 +2,6 @@ package me.aleols1.core.commands.staff;
 
 import me.aleols1.core.database.Database;
 import me.aleols1.core.language.Language;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
