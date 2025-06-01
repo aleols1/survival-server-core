@@ -1,14 +1,13 @@
 package me.aleols1.core.commands.staff;
 
-import me.aleols1.core.Main;
 import me.aleols1.core.database.Database;
 import me.aleols1.core.language.Language;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +21,12 @@ public class Ban implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        String perm = "core.command." + cmd.getName().toLowerCase();
+        if (!sender.hasPermission(perm)) {
+            sender.sendMessage(Language.server("Noperms"));
+            return true;
+        }
+
         if (args.length < 2) return false;
 
         String target = args[0];

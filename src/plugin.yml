@@ -6,7 +6,10 @@ author: aleols1
 commands:
   ban:
     description: Banne en spiller permanent
+    permission: core.command.ban
   tempban:
     description: Midlertidig ban av spiller
+    permission: core.command.tempban
   unban:
     description: Fjerne ban fra en spiller
+    permission: core.command.unban

@@ -1,3 +1,8 @@
+Server:
+  Servername: "&eServerName"
+  Noperms: "&cDu har ikke tilgang til dette."
+  Nocommand: "&cDenne kommandoen eksiterer ikke, forsøk /help"
+
 messages:
   ban-success: "&c{target} ble bannlyst for: &e{reason}"
   tempban-success: "&c{target} ble midlertidig bannlyst i &6{duration} &cfor: &e{reason}"
