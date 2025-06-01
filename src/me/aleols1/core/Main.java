@@ -3,6 +3,7 @@ package me.aleols1.core;
 import me.aleols1.core.commands.staff.Ban;
 import me.aleols1.core.database.Database;
 import me.aleols1.core.language.Language;
+import me.aleols1.core.logs.DiscordWebhook;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -16,6 +17,7 @@ public class Main extends JavaPlugin {
         saveDefaultConfig();
         Language.init(this);
         Database.init(this);
+        DiscordWebhook.init(this);
 
         Ban banCmd = new Ban();
         getCommand("ban").setExecutor(banCmd);

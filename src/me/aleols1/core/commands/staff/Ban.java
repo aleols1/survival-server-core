@@ -2,6 +2,7 @@ package me.aleols1.core.commands.staff;
 
 import me.aleols1.core.database.Database;
 import me.aleols1.core.language.Language;
+import me.aleols1.core.logs.DiscordWebhook;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -30,10 +31,12 @@ public class Ban implements CommandExecutor {
 
         String target = args[0];
         String reason = String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length));
+        String actor = sender.getName();
 
         if (cmd.getName().equalsIgnoreCase("ban")) {
-            Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, null, sender.getName());
+            Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, null, actor);
             sendMessage(sender, "ban-success", target, reason, null);
+            DiscordWebhook.sendBanEmbed(actor, target, reason);
         } else if (cmd.getName().equalsIgnoreCase("tempban")) {
             if (args.length < 3) return false;
             String timeStr = args[1];
@@ -41,23 +44,25 @@ public class Ban implements CommandExecutor {
 
             long durationMillis = parseTimeToMillis(timeStr);
             Date expire = Date.from(Instant.now().plusMillis(durationMillis));
-            Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expire, sender.getName());
+            Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expire, actor);
 
             try (Connection conn = Database.getConnection();
                  PreparedStatement ps = conn.prepareStatement("INSERT INTO bans (player, reason, until, bywho) VALUES (?, ?, ?, ?)")) {
                 ps.setString(1, target);
                 ps.setString(2, reason);
                 ps.setTimestamp(3, new java.sql.Timestamp(expire.getTime()));
-                ps.setString(4, sender.getName());
+                ps.setString(4, actor);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
             sendMessage(sender, "tempban-success", target, reason, timeStr);
+            DiscordWebhook.sendTempbanEmbed(actor, target, reason, timeStr);
         } else if (cmd.getName().equalsIgnoreCase("unban")) {
             Bukkit.getBanList(BanList.Type.NAME).pardon(target);
             sendMessage(sender, "unban-success", target, reason, null);
+            DiscordWebhook.sendUnbanEmbed(actor, target, reason);
         }
         return true;
     }
