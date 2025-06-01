@@ -2,10 +2,26 @@ Server:
   Servername: "&eServerName"
   Noperms: "&cDu har ikke tilgang til dette."
   Nocommand: "&cDenne kommandoen eksiterer ikke, forsøk /help"
+  Website: "https://website.com/"
 
 messages:
   ban-success: "&c{target} ble bannlyst for: &e{reason}"
+  ban-screen: |-
+    &4&lDu er permanent utestengt fra {servername}
+    
+    &7Grunnlag: &c{target}
+    &7Staff: &c{actor}
+    
+    &7Ta kontakt på vår nettside: {website} dersom du mener dette er feil!
   tempban-success: "&c{target} ble midlertidig bannlyst i &6{duration} &cfor: &e{reason}"
+  tempban-screen: |-
+    &4&lDu er midlertidig utestengt fra {servername}
+    
+    &7Grunnlag: &c{target}
+    &7Staff: &c{actor}
+    &7Varighet: &c{Duration}
+    
+    &7Ta kontakt på vår nettside: {website} dersom du mener dette er feil!
   unban-success: "&a{target} ble fjernet fra banlisten. Grunn: &f{reason}"
   already-banned: "&e{target} er allerede bannlyst."
   not-banned: "&e{target} er ikke bannlyst."
