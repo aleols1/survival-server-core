@@ -26,11 +26,16 @@ public class Language {
 
     public static String get(String key, Map<String, String> placeholders) {
         String message = (String) messages.getOrDefault(key, "Missing lang: " + key);
+
+        // Legg inn global placeholder {website}
+        placeholders.put("website", (String) serverInfo.getOrDefault("Website", "https://dinside.no"));
+
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
             message = message.replace("{" + entry.getKey() + "}", entry.getValue());
         }
         return ChatColor.translateAlternateColorCodes('&', message);
     }
+
 
     public static String server(String key) {
         String value = (String) serverInfo.getOrDefault(key, "Missing server: " + key);

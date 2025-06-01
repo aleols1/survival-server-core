@@ -5,7 +5,6 @@ import me.aleols1.core.language.Language;
 import me.aleols1.core.logs.DiscordWebhook;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,7 +39,7 @@ public class Ban implements CommandExecutor {
             String actor = sender.getName();
 
             Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, null, actor);
-            kickIfOnline(target, reason);
+            kickBannedPlayer(target, reason, actor, null, false);
             sendMessage(sender, "ban-success", target, reason, null);
 
             try {
@@ -61,7 +60,7 @@ public class Ban implements CommandExecutor {
             Date expire = Date.from(Instant.now().plusMillis(durationMillis));
 
             Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expire, actor);
-            kickIfOnline(target, reason);
+            kickBannedPlayer(target, reason, actor, expire, true);
 
             try (Connection conn = Database.getConnection();
                  PreparedStatement ps = conn.prepareStatement("INSERT INTO bans (player, reason, until, bywho) VALUES (?, ?, ?, ?)")) {
@@ -71,7 +70,7 @@ public class Ban implements CommandExecutor {
                 ps.setString(4, actor);
                 ps.executeUpdate();
             } catch (SQLException e) {
-                sender.sendMessage("§c[Feil] Kunne ikke lagre ban til databasen.");
+                sender.sendMessage("§c[Feil] Kunne ikke lagre tempban til databasen.");
                 e.printStackTrace();
             }
 
@@ -103,10 +102,23 @@ public class Ban implements CommandExecutor {
         return true;
     }
 
-    private void kickIfOnline(String target, String reason) {
+    private void kickBannedPlayer(String target, String reason, String actor, Date expires, boolean tempban) {
         Player p = Bukkit.getPlayerExact(target);
         if (p != null && p.isOnline()) {
-            p.kickPlayer("Du ble bannlyst for: " + reason);
+            Map<String, String> ph = new HashMap<>();
+            ph.put("reason", reason);
+            ph.put("actor", actor);
+            if (expires != null) {
+                java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EEEE, dd.MM.yyyy - HH:mm", java.util.Locale.forLanguageTag("no"));
+                String formatted = format.format(expires);
+                ph.put("expires", formatted.substring(0, 1).toUpperCase() + formatted.substring(1));
+            }
+
+            String message = tempban
+                    ? Language.get("tempban-screen", ph)
+                    : Language.get("ban-screen", ph);
+
+            p.kickPlayer(message);
         }
     }
 
