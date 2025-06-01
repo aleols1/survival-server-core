@@ -2,3 +2,11 @@ main: me.aleols1.core.Main
 name: Survival server core
 version: 1.0
 author: aleols1
+
+commands:
+  ban:
+    description: Banne en spiller permanent
+  tempban:
+    description: Midlertidig ban av spiller
+  unban:
+    description: Fjerne ban fra en spiller

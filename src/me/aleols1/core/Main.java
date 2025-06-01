@@ -1,18 +1,37 @@
 package me.aleols1.core;
 
+import me.aleols1.core.commands.staff.Ban;
+import me.aleols1.core.database.Database;
+import me.aleols1.core.language.Language;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
+    private static Main instance;
+
     @Override
     public void onEnable() {
-        System.out.println("Survival core startet");
-        super.onEnable();
+        instance = this;
+
+        saveDefaultConfig();
+        Language.init(this);
+        Database.init(this);
+
+        Ban banCmd = new Ban();
+        getCommand("ban").setExecutor(banCmd);
+        getCommand("tempban").setExecutor(banCmd);
+        getCommand("unban").setExecutor(banCmd);
+
+        getLogger().info("SurvivalServerCore er aktivert.");
     }
 
     @Override
     public void onDisable() {
-        System.out.println("Survival core stoppet");
-        super.onDisable();
+        Database.close();
+        getLogger().info("SurvivalServerCore er deaktivert.");
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 }

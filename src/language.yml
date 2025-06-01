@@ -1,0 +1,6 @@
+messages:
+  ban-success: "&c{target} ble bannlyst for: &e{reason}"
+  tempban-success: "&c{target} ble midlertidig bannlyst i &6{duration} &cfor: &e{reason}"
+  unban-success: "&a{target} ble fjernet fra banlisten. Grunn: &f{reason}"
+  already-banned: "&e{target} er allerede bannlyst."
+  not-banned: "&e{target} er ikke bannlyst."
