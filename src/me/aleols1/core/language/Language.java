@@ -3,6 +3,10 @@ package me.aleols1.core.language;
 
 import me.aleols1.core.Main;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 import java.util.Map;
 
 public class Language {
@@ -11,8 +15,13 @@ public class Language {
 
     public static void init(Main plugin) {
         plugin.saveResource("language.yml", false);
-        messages = plugin.getConfig().getConfigurationSection("messages").getValues(true);
-        serverInfo = plugin.getConfig().getConfigurationSection("Server").getValues(true);
+
+        FileConfiguration langConfig = YamlConfiguration.loadConfiguration(
+                new File(plugin.getDataFolder(), "language.yml")
+        );
+
+        messages = langConfig.getConfigurationSection("messages").getValues(true);
+        serverInfo = langConfig.getConfigurationSection("Server").getValues(true);
     }
 
     public static String get(String key, Map<String, String> placeholders) {

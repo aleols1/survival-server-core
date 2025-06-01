@@ -7,9 +7,12 @@ commands:
   ban:
     description: Banne en spiller permanent
     permission: core.command.ban
+    usage: /ban <spiller> <grunn>
   tempban:
     description: Midlertidig ban av spiller
     permission: core.command.tempban
+    usage: /tempban <spiller> <tid> <grunn>
   unban:
     description: Fjerne ban fra en spiller
     permission: core.command.unban
+    usage: /unban <spiller>

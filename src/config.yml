@@ -1,9 +1,9 @@
 mysql:
-  host: "localhost"
+  host: "95.216.5.252"
   port: 3306
-  database: "minecraft"
-  username: "bruker"
-  password: "passord"
+  database: "mc_koding"
+  username: "mc_koding"
+  password: "mc_koding"
 
 discord:
   webhooks:
